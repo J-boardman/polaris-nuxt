@@ -33,7 +33,7 @@ function handleCreateTask() {
   </form>
   <ul>
     <li v-for="task in tasks" :key="task._id" class="flex items-center gap-2">
-      <UCheckbox v-model="task.isCompleted" @update:model-value="toggleTask({ taskId: task._id })" />
+      <UCheckbox :model-value="task.isCompleted" @update:model-value="toggleTask({ taskId: task._id })" />
       <span>{{ task.text }}</span>
       <UButton @click="removeTask({ taskId: task._id })" icon="i-heroicons-trash" variant="ghost" color="neutral" />
     </li>

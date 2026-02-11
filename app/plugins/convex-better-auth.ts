@@ -15,7 +15,7 @@ export interface AuthSessionData {
   session: {
     id: string;
     userId: string;
-    token: string;
+    // token removed - not SSR-safe, handled separately on client
     expiresAt: Date | string;
     createdAt: Date | string;
     updatedAt: Date | string;
@@ -61,16 +61,21 @@ async function setupServerAuth(
         method: 'GET',
         headers: { 'Better-Auth-Cookie': cookieHeader },
       }).catch(() => null),
-      $fetch<AuthSessionData>(`${convexSiteUrl}/api/auth/get-session`, {
+      $fetch<{
+        user: AuthSessionData['user'];
+        session: AuthSessionData['session'] & { token?: string };
+      }>(`${convexSiteUrl}/api/auth/get-session`, {
         method: 'GET',
         headers: { 'Better-Auth-Cookie': cookieHeader },
       }).catch(() => null),
     ]);
 
     if (sessionResponse?.user && sessionResponse?.session) {
+      // Extract token to exclude it from SSR-serialized state
+      const { token: _, ...sessionWithoutToken } = sessionResponse.session;
       authState.value = {
         user: sessionResponse.user,
-        session: sessionResponse.session,
+        session: sessionWithoutToken as AuthSessionData['session'],
       };
     }
 
@@ -127,9 +132,12 @@ function setupClientAuth(authClient: AuthClient, authState: Ref<AuthSessionData>
       const newSessionId = newSession?.data?.session?.id ?? null;
 
       if (hasSession) {
+        // Extract token to exclude it from SSR-serialized state
+        const sessionData = newSession.data!.session as AuthSessionData['session'] & { token?: string };
+        const { token: _, ...sessionWithoutToken } = sessionData;
         authState.value = {
           user: newSession.data!.user as AuthSessionData['user'],
-          session: newSession.data!.session as AuthSessionData['session'],
+          session: sessionWithoutToken as AuthSessionData['session'],
         };
       } else if (!isPending) {
         authState.value = { user: null, session: null };

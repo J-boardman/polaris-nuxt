@@ -53,10 +53,12 @@ if (import.meta.client) {
             });
           });
         }
-      }
 
-      await nextTick();
-      navigateTo('/', { replace: true });
+        navigateTo('/', { replace: true });
+      } else {
+        // OTT verification succeeded but no session was established
+        navigateTo('/sign-in', { replace: true });
+      }
     } catch (error) {
       console.error('[auth/callback] OTT verification failed:', error);
       navigateTo('/sign-in', { replace: true });

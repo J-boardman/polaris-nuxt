@@ -15,7 +15,6 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
   return betterAuth({
     trustedOrigins: [siteUrl],
     database: authComponent.adapter(ctx),
-    // Configure simple, non-verified email/password to get started
     plugins: [
       // The cross domain plugin is required for client side frameworks
       crossDomain({ siteUrl }),
