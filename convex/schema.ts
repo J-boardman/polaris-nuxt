@@ -1,9 +1,6 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema } from "convex/server";
+import * as db from "./db"
 
 export default defineSchema({
-  tasks: defineTable({
-    text: v.string(),
-    isCompleted: v.boolean(),
-  }),
+  tasks: db.tasks.tasksTable,
 });
