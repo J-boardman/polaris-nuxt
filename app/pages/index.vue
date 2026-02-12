@@ -12,6 +12,7 @@ const newTaskText = ref("");
 
 
 function handleCreateTask() {
+  if (!newTaskText.value.trim()) return;
   createTask({ text: newTaskText.value });
   newTaskText.value = "";
 }
