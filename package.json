@@ -10,9 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.26",
+    "@convex-dev/agent": "^0.3.2",
     "@convex-dev/better-auth": "^0.10.10",
+    "@convex-dev/workflow": "^0.3.4",
+    "@mendable/firecrawl-js": "^4.12.1",
     "@nuxt/ui": "^4.4.0",
     "@types/node": "^25.2.3",
+    "ai": "^6.0.82",
     "better-auth": "1.4.9",
     "convex": "^1.31.7",
     "convex-nuxt": "0.1.5",
