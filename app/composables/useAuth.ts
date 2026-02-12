@@ -1,8 +1,8 @@
-import { computed } from 'vue';
-import { getAuthClient } from '~/lib/auth-client';
-import type { AuthSessionData } from '~/plugins/convex-better-auth';
+import { computed } from "vue";
+import { getAuthClient } from "~/lib/auth-client";
+import type { AuthSessionData } from "~/plugins/convex-better-auth";
 
-const AUTH_STATE_KEY = 'auth-session';
+const AUTH_STATE_KEY = "auth-session";
 
 export function useAuth() {
   const authClient = getAuthClient();
@@ -17,7 +17,9 @@ export function useAuth() {
 
   const session = computed(() => {
     if (import.meta.server) return ssrAuthState.value.session;
-    return betterAuthSession?.value?.data?.session ?? ssrAuthState.value.session;
+    return (
+      betterAuthSession?.value?.data?.session ?? ssrAuthState.value.session
+    );
   });
 
   const user = computed(() => {
@@ -36,7 +38,7 @@ export function useAuth() {
   const signOut = async () => {
     await authClient.signOut();
     ssrAuthState.value = { user: null, session: null };
-    await navigateTo('/sign-in', { replace: true });
+    await navigateTo("/sign-in", { replace: true });
   };
 
   return {

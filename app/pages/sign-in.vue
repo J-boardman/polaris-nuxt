@@ -12,7 +12,12 @@ const signInWithGithub = () => {
 <template>
   <div>
     <h1>Sign In</h1>
-    <UButton @click="signInWithGithub" color="primary" variant="outline" icon="i-simple-icons-github">
+    <UButton
+      color="primary"
+      variant="outline"
+      icon="i-simple-icons-github"
+      @click="signInWithGithub"
+    >
       Sign In with Github
     </UButton>
   </div>

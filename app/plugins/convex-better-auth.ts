@@ -1,6 +1,6 @@
-import { watch, type Ref } from 'vue';
-import { initAuthClient, type AuthClient } from '~/lib/auth-client';
-import { createAuthStorage, getCookieHeader } from '~/lib/auth-storage';
+import { watch, type Ref } from "vue";
+import { initAuthClient, type AuthClient } from "~/lib/auth-client";
+import { createAuthStorage, getCookieHeader } from "~/lib/auth-storage";
 
 export interface AuthSessionData {
   user: {
@@ -22,10 +22,10 @@ export interface AuthSessionData {
   } | null;
 }
 
-const AUTH_STATE_KEY = 'auth-session';
+const AUTH_STATE_KEY = "auth-session";
 
 export default defineNuxtPlugin({
-  name: 'convex-better-auth',
+  name: "convex-better-auth",
   order: 100,
   async setup(nuxtApp) {
     const storage = createAuthStorage();
@@ -46,7 +46,7 @@ export default defineNuxtPlugin({
 
 async function setupServerAuth(
   vueApp: { _context: { provides?: Record<string, unknown> } },
-  authState: Ref<AuthSessionData>
+  authState: Ref<AuthSessionData>,
 ) {
   const cookieHeader = getCookieHeader();
   if (!cookieHeader) return;
@@ -58,15 +58,15 @@ async function setupServerAuth(
   try {
     const [tokenResponse, sessionResponse] = await Promise.all([
       $fetch<{ token?: string }>(`${convexSiteUrl}/api/auth/convex/token`, {
-        method: 'GET',
-        headers: { 'Better-Auth-Cookie': cookieHeader },
+        method: "GET",
+        headers: { "Better-Auth-Cookie": cookieHeader },
       }).catch(() => null),
       $fetch<{
-        user: AuthSessionData['user'];
-        session: AuthSessionData['session'] & { token?: string };
+        user: AuthSessionData["user"];
+        session: AuthSessionData["session"] & { token?: string };
       }>(`${convexSiteUrl}/api/auth/get-session`, {
-        method: 'GET',
-        headers: { 'Better-Auth-Cookie': cookieHeader },
+        method: "GET",
+        headers: { "Better-Auth-Cookie": cookieHeader },
       }).catch(() => null),
     ]);
 
@@ -75,14 +75,16 @@ async function setupServerAuth(
       const { token: _, ...sessionWithoutToken } = sessionResponse.session;
       authState.value = {
         user: sessionResponse.user,
-        session: sessionWithoutToken as AuthSessionData['session'],
+        session: sessionWithoutToken as AuthSessionData["session"],
       };
     }
 
     if (tokenResponse?.token) {
-      const convexContext = vueApp._context.provides?.['convex-vue'] as {
-        httpClientRef?: { value?: { setAuth: (token: string) => void } };
-      } | undefined;
+      const convexContext = vueApp._context.provides?.["convex-vue"] as
+        | {
+            httpClientRef?: { value?: { setAuth: (token: string) => void } };
+          }
+        | undefined;
 
       if (convexContext?.httpClientRef?.value) {
         convexContext.httpClientRef.value.setAuth(tokenResponse.token);
@@ -93,9 +95,12 @@ async function setupServerAuth(
   }
 }
 
-function setupClientAuth(authClient: AuthClient, authState: Ref<AuthSessionData>) {
+function setupClientAuth(
+  authClient: AuthClient,
+  authState: Ref<AuthSessionData>,
+) {
   const convex = useConvexClient();
-  const convexAuthReady = useState('convex-auth-ready', () => false);
+  const convexAuthReady = useState("convex-auth-ready", () => false);
 
   let cachedToken: string | null = null;
 
@@ -128,16 +133,19 @@ function setupClientAuth(authClient: AuthClient, authState: Ref<AuthSessionData>
     () => session.value,
     (newSession) => {
       const isPending = newSession?.isPending;
-      const hasSession = !!(newSession?.data?.user && newSession?.data?.session);
+      const hasSession = !!(
+        newSession?.data?.user && newSession?.data?.session
+      );
       const newSessionId = newSession?.data?.session?.id ?? null;
 
       if (hasSession) {
         // Extract token to exclude it from SSR-serialized state
-        const sessionData = newSession.data!.session as AuthSessionData['session'] & { token?: string };
+        const sessionData = newSession.data!
+          .session as AuthSessionData["session"] & { token?: string };
         const { token: _, ...sessionWithoutToken } = sessionData;
         authState.value = {
-          user: newSession.data!.user as AuthSessionData['user'],
-          session: sessionWithoutToken as AuthSessionData['session'],
+          user: newSession.data!.user as AuthSessionData["user"],
+          session: sessionWithoutToken as AuthSessionData["session"],
         };
       } else if (!isPending) {
         authState.value = { user: null, session: null };
@@ -160,6 +168,6 @@ function setupClientAuth(authClient: AuthClient, authState: Ref<AuthSessionData>
         lastSessionId = null;
       }
     },
-    { deep: true, immediate: true }
+    { deep: true, immediate: true },
   );
 }

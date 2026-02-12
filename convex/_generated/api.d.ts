@@ -11,9 +11,9 @@
 import type * as agents_books from "../agents/books.js";
 import type * as api_auth from "../api/auth.js";
 import type * as api_books from "../api/books.js";
-import type * as api_tasks from "../api/tasks.js";
+import type * as api_projects from "../api/projects.js";
 import type * as db_index from "../db/index.js";
-import type * as db_tasks from "../db/tasks.js";
+import type * as db_projects from "../db/projects.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_customMutations from "../lib/customMutations.js";
@@ -31,9 +31,9 @@ declare const fullApi: ApiFromModules<{
   "agents/books": typeof agents_books;
   "api/auth": typeof api_auth;
   "api/books": typeof api_books;
-  "api/tasks": typeof api_tasks;
+  "api/projects": typeof api_projects;
   "db/index": typeof db_index;
-  "db/tasks": typeof db_tasks;
+  "db/projects": typeof db_projects;
   http: typeof http;
   "lib/auth": typeof lib_auth;
   "lib/customMutations": typeof lib_customMutations;

@@ -9,9 +9,13 @@ export const getBookRecommendation = userMutation({
   },
   handler: async (ctx, args) => {
     console.log("Getting book recommendation for book:", args.bookTitle);
-    await ctx.scheduler.runAfter(0, internal.agents.books.getBookRecommendation, {
-      bookTitle: args.bookTitle,
-    });
+    await ctx.scheduler.runAfter(
+      0,
+      internal.agents.books.getBookRecommendation,
+      {
+        bookTitle: args.bookTitle,
+      },
+    );
   },
 });
 

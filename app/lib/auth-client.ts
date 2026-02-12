@@ -4,9 +4,14 @@ import {
   crossDomainClient,
 } from "@convex-dev/better-auth/client/plugins";
 
-export type AuthClient = ReturnType<typeof createAuthClient<{
-  plugins: [ReturnType<typeof convexClient>, ReturnType<typeof crossDomainClient>];
-}>>;
+export type AuthClient = ReturnType<
+  typeof createAuthClient<{
+    plugins: [
+      ReturnType<typeof convexClient>,
+      ReturnType<typeof crossDomainClient>,
+    ];
+  }>
+>;
 
 let authClientInstance: AuthClient | null = null;
 
@@ -40,7 +45,7 @@ export function initAuthClient(storage: {
 export function getAuthClient(): AuthClient {
   if (!authClientInstance) {
     throw new Error(
-      'Auth client not initialized. Make sure the convex-better-auth plugin has run.'
+      "Auth client not initialized. Make sure the convex-better-auth plugin has run.",
     );
   }
   return authClientInstance;

@@ -8,7 +8,6 @@ Sentry.init({
   dsn: config.public.sentry.dsn,
   tunnel: config.public.sentry.tunnelUrl,
 
-
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
@@ -33,5 +32,4 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-
 });
