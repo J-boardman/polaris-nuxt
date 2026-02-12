@@ -7,4 +7,9 @@ export default defineNuxtConfig({
   convex: {
     url: process.env.CONVEX_URL
   },
+  runtimeConfig: {
+    public: {
+      convexSiteUrl: process.env.CONVEX_SITE_URL || '',
+    }
+  },
 })

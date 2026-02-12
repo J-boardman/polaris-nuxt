@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@convex-dev/better-auth": "^0.10.10",
     "@nuxt/ui": "^4.4.0",
     "@types/node": "^25.2.3",
+    "better-auth": "1.4.9",
     "convex": "^1.31.7",
     "convex-nuxt": "0.1.5",
     "nuxt": "^4.3.1",
