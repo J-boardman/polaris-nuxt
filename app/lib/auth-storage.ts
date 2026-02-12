@@ -1,6 +1,6 @@
-import type { CookieRef } from 'nuxt/app';
+import type { CookieRef } from "nuxt/app";
 
-const COOKIE_NAME = 'better-auth-session';
+const COOKIE_NAME = "better-auth-session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 type CookieData = Record<string, string>;
@@ -12,8 +12,8 @@ type CookieData = Record<string, string>;
 export function createAuthStorage() {
   const cookie = useCookie<CookieData | null>(COOKIE_NAME, {
     maxAge: COOKIE_MAX_AGE,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     httpOnly: false,
   }) as CookieRef<CookieData | null>;
 
@@ -42,21 +42,24 @@ export function createAuthStorage() {
 export function getCookieHeader(): string {
   const cookie = useCookie<CookieData | null>(COOKIE_NAME, {
     maxAge: COOKIE_MAX_AGE,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     httpOnly: false,
   });
 
-  const raw = cookie.value?.['better-auth_cookie'];
-  if (!raw) return '';
+  const raw = cookie.value?.["better-auth_cookie"];
+  if (!raw) return "";
 
   try {
-    const parsed = JSON.parse(raw) as Record<string, { value: string; expires: string | null }>;
+    const parsed = JSON.parse(raw) as Record<
+      string,
+      { value: string; expires: string | null }
+    >;
     return Object.entries(parsed)
       .filter(([_, c]) => !c.expires || new Date(c.expires) > new Date())
       .map(([name, c]) => `${name}=${c.value}`)
-      .join('; ');
+      .join("; ");
   } catch {
-    return '';
+    return "";
   }
 }

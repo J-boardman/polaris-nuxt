@@ -7,7 +7,8 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, statusMessage: "Missing body" });
     }
 
-    const envelope = typeof body === "string" ? body : new TextDecoder().decode(body);
+    const envelope =
+      typeof body === "string" ? body : new TextDecoder().decode(body);
     const piece = envelope.split("\n")[0];
     if (!piece) {
       throw createError({ statusCode: 400, statusMessage: "Missing piece" });
@@ -17,10 +18,16 @@ export default defineEventHandler(async (event) => {
     const project_id = dsn.pathname?.replace("/", "");
 
     if (dsn.hostname !== SENTRY_HOST) {
-      throw createError({ statusCode: 400, statusMessage: `Invalid sentry hostname: ${dsn.hostname}` });
+      throw createError({
+        statusCode: 400,
+        statusMessage: `Invalid sentry hostname: ${dsn.hostname}`,
+      });
     }
     if (!project_id || SENTRY_PROJECT_ID !== project_id) {
-      throw createError({ statusCode: 400, statusMessage: `Invalid sentry project id: ${project_id}` });
+      throw createError({
+        statusCode: 400,
+        statusMessage: `Invalid sentry project id: ${project_id}`,
+      });
     }
 
     const upstream_sentry_url = `https://${SENTRY_HOST}/api/${project_id}/envelope/`;
@@ -32,6 +39,9 @@ export default defineEventHandler(async (event) => {
     return {};
   } catch (e) {
     console.error("error tunneling to sentry", e);
-    throw createError({ statusCode: 500, statusMessage: "Error tunneling to sentry" });
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Error tunneling to sentry",
+    });
   }
 });

@@ -28,4 +28,4 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
       },
     },
   });
-}
+};

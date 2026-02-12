@@ -1,4 +1,8 @@
-import { customQuery, customCtx, type CustomCtx } from "convex-helpers/server/customFunctions";
+import {
+  customQuery,
+  customCtx,
+  type CustomCtx,
+} from "convex-helpers/server/customFunctions";
 import { query } from "../_generated/server";
 import { ConvexError } from "convex/values";
 
@@ -14,7 +18,7 @@ export const userQuery = customQuery(
     // Pass in a user to use in evaluating rules,
     // which validate data access at access / write time.
     return { user };
-  })
+  }),
 );
 
 export type UserQueryCtx = CustomCtx<typeof userQuery>;

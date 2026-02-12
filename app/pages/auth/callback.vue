@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getAuthClient } from '~/lib/auth-client';
+import { getAuthClient } from "~/lib/auth-client";
 
 definePageMeta({ layout: false });
 
@@ -9,11 +9,13 @@ if (import.meta.client) {
   const token = route.query.ott as string | undefined;
 
   if (!token) {
-    navigateTo('/sign-in', { replace: true });
+    navigateTo("/sign-in", { replace: true });
   } else {
     try {
       // Verify the one-time token
-      const result = await authClient.crossDomain.oneTimeToken.verify({ token });
+      const result = await authClient.crossDomain.oneTimeToken.verify({
+        token,
+      });
       const session = result.data?.session;
 
       if (session) {
@@ -36,13 +38,13 @@ if (import.meta.client) {
                   stop();
                   resolve();
                 }
-              }
+              },
             );
           });
         }
 
         // Wait for Convex WebSocket auth to actually be established
-        const convexAuthReady = useState('convex-auth-ready');
+        const convexAuthReady = useState("convex-auth-ready");
         if (!convexAuthReady.value) {
           await new Promise<void>((resolve) => {
             const stop = watch(convexAuthReady, (ready) => {
@@ -54,14 +56,14 @@ if (import.meta.client) {
           });
         }
 
-        navigateTo('/', { replace: true });
+        navigateTo("/", { replace: true });
       } else {
         // OTT verification succeeded but no session was established
-        navigateTo('/sign-in', { replace: true });
+        navigateTo("/sign-in", { replace: true });
       }
     } catch (error) {
-      console.error('[auth/callback] OTT verification failed:', error);
-      navigateTo('/sign-in', { replace: true });
+      console.error("[auth/callback] OTT verification failed:", error);
+      navigateTo("/sign-in", { replace: true });
     }
   }
 }
